@@ -5,9 +5,9 @@ const { Schema } = mongoose;
 const educationSchema = new Schema({
   school: { type: String, required: true },
   degree: { type: String },
-  startYear: { type: Number },
-  endYear: { type: Number }
-}, { _id: true });
+  startDate: { type: String },
+  endDate: { type: String }
+});
 
 // Sub-schema cho WorkExperience
 const workExperienceSchema = new Schema({
@@ -16,34 +16,48 @@ const workExperienceSchema = new Schema({
   startDate: { type: String },
   endDate: { type: String },
   description: { type: String }
-}, { _id: true });
+});
 
 // Sub-schema cho ForeignLanguage
 const foreignLanguageSchema = new Schema({
   language: { type: String, required: true },
   level: { type: String }
-}, { _id: true });
+});
 
 // Sub-schema cho Project
 const projectSchema = new Schema({
   title: { type: String },
   description: { type: String },
   link: { type: String }
-}, { _id: true });
+});
 
 // Sub-schema cho Award
 const awardSchema = new Schema({
   title: { type: String, required: true },
   issuer: { type: String },
   date: { type: Date }
-}, { _id: true });
+});
 
 const skillsSchema = new Schema({
   skill: { type: String, required: true },
   description: { type: String },
   level: { type: String }
-}, { _id: true });
+});
 
+const AIEvaluateSchema = new Schema({
+  total_score: { type: Number },
+  section_scores: {
+    education: { type: Number },
+    experience: { type: Number },
+    skills: { type: Number },
+    projects: { type: Number }
+  },
+  strengths: { type: [String] },
+  weaknesses: { type: [String] },
+  suggestions: { type: [String] },
+  ats_readiness: { type: String },
+  update_time: { type: Date },
+})
 // Schema chính cho User
 const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
@@ -53,6 +67,7 @@ const userSchema = new Schema({
   password: { type: String },
   phone: { type: String },
   role: { type: String },
+  level: { type: String },
   avatar: { type: String },
   address: { type: String },
   joinedAt: { type: Date },
@@ -63,7 +78,9 @@ const userSchema = new Schema({
   skills: [skillsSchema],
   foreignLanguages: [foreignLanguageSchema],
   projects: [projectSchema],
-  awards: [awardSchema]
+  awards: [awardSchema],
+  AIEvaluate: { type: AIEvaluateSchema },
+
 }, { timestamps: true }); // auto tạo createdAt & updatedAt
 
 module.exports = mongoose.model('User', userSchema);
